@@ -7,6 +7,35 @@
 
 int main() {
 
+    Matrix *matrix = createMatrix(3, 5);
+
+    allocateMatrixElements(matrix);
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 5; j++) {
+            insertValue(matrix, i+1, j+1, (i+1)*(j+1)*2);
+        }
+    }
+
+    printMatrix(matrix);
+    printf("\n\n");
+
+    Element *element;
+    int x = 2, y = 5;
+    if (consultValuePosition(matrix, &element, 2, 5) == 1) {
+        printf("Valor da posição (%d,%d): %d\n", x, y, element->data);
+    }
+
+    int value = 24;
+    if (consultValue(matrix, &element, value) == 1) {
+        printf("O valor %d está na matriz\n", value);
+    } else if (consultValue(matrix, &element, value) == 0) {
+        printf("O valor %d nao está na matriz\n", value);
+    }
+
+    printNeighbours(matrix, 2, 3);
+
+    freeMatrix(matrix);
 
     return 0;
 }
