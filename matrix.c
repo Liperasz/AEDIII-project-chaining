@@ -110,6 +110,48 @@ int createElement(Matrix *matrix, int row, int col) {
     return 1;
 }
 
+int removeElement(Matrix *matrix, int row, int col) {
+
+    if (matrix == NULL || matrix->first == NULL) {
+        return 0;
+    }
+
+    if (row < 1 || col < 1 || row > matrix->rows || col > matrix->columns) {
+        return 0;
+    }
+
+    Element *element = matrix->first;
+    for (int i = 1; i < row; i++) {
+        element = element->below;
+    }
+    for (int i = 1; i < col; i++) {
+        element = element->right;
+    }
+
+    if (element == NULL) {
+        return 0;
+    }
+
+
+    if (element->above != NULL) {
+        element->above->below = element->below;
+    }
+    if (element->below != NULL) {
+        element->below->above = element->above;
+    }
+    if (element->left != NULL) {
+        element->left->right = element->right;
+    }
+    if (element->right != NULL) {
+        element->right->left = element->left;
+    }
+
+    free(element);
+
+    return 1;
+
+}
+
 int allocateMatrixElements(Matrix *matrix) {
 
     if (matrix == NULL) {
@@ -126,6 +168,129 @@ int allocateMatrixElements(Matrix *matrix) {
 
     return 1;
 
+}
+
+int addRow(Matrix *matrix, int row) {
+
+    if (matrix == NULL) {
+        return 0;
+    }
+
+    if (matrix->rows + 1 < row) {
+        return 0;
+    }
+
+    matrix->rows += 1;
+    for (int i = 0; i < matrix->columns; i++) {
+
+
+        //Falta atualização do createElement()
+
+        // createElement(matrix, row, i + 1);
+
+        //-------------------------------------------------------------------------------
+
+
+    }
+
+    return 1;
+}
+
+int addColumn(Matrix *matrix, int col) {
+
+    if (matrix == NULL) {
+        return 0;
+    }
+
+    if (matrix->rows + 1 < col) {
+        return 0;
+    }
+
+    matrix->columns += 1;
+    for (int i = 0; i < matrix->rows; i++) {
+
+
+        //Falta atualização do createElement()
+
+        // createElement(matrix, row, i + 1);
+
+        //-------------------------------------------------------------------------------
+
+
+    }
+
+    return 1;
+}
+
+int removeRow(Matrix *matrix, int row) {
+
+    if (matrix == NULL || matrix->first == NULL) {
+        return 0;
+    }
+
+    Element *element = matrix->first;
+    for (int i = 1; i < row; i++) {
+        element = element->below;
+    }
+
+    if (element == NULL) {
+        return 0;
+    }
+
+    int col = 1;
+    while (element != NULL) {
+        Element *aux = element;
+        element = element->right;
+
+        //Falta atualização do removeElement()
+
+        // removeElement(matrix, row, col);
+
+        //-------------------------------------------------------------------------------
+
+        col++;
+    }
+
+    matrix->rows--;
+
+    return 1;
+
+}
+
+int removeColumn(Matrix *matrix, int col) {
+
+    if (matrix == NULL || matrix->first == NULL) {
+        return 0;
+    }
+
+    Element *element = matrix->first;
+    for (int i = 1; i < col; i++) {
+        element = element->right;
+    }
+
+    if (element == NULL) {
+        return 0;
+    }
+
+    int row = 1;
+    while (element != NULL) {
+        Element *aux = element;
+        element = element->below;
+
+
+        //Falta atualização do removeElement()
+
+        // removeElement(matrix, row, col);
+
+        //-------------------------------------------------------------------------------
+
+
+        row++;
+    }
+
+    matrix->columns--;
+
+    return 1;
 }
 
 int insertValue(Matrix *matrix, int row, int col, int value) {
