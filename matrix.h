@@ -37,6 +37,6 @@ int insertValue(Matrix *matrix, int row, int col, int value);
 int consultValuePosition(Matrix *matrix, Element **element, int row, int col);
 int consultValue(Matrix *matrix, Element **element, int value);
 int printNeighbours(Matrix *matrix, int row, int col);
-
+int swapElements(Matrix *matrix, int row1, int col1, int row2, int col2);
 
 #endif //MATRIX_H
