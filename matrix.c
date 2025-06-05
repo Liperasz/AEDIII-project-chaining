@@ -415,3 +415,43 @@ int printNeighbours(Matrix *matrix, int row, int col) {
 
     return 1;
 }
+
+//Essa troca não muda a posição real dos nós na estrutura de ponteiros, apenas os valores armazenados ( FUNÇÂO EXTRA)
+
+    int swapElements(Matrix *matrix, int row1, int col1, int row2, int col2) {
+        if (matrix == NULL || matrix->first == NULL) {
+            return 0;
+        }
+
+        if (row1 < 1 || row1 > matrix->rows || col1 < 1 || col1 > matrix->columns ||
+            row2 < 1 || row2 > matrix->rows || col2 < 1 || col2 > matrix->columns) {
+            return 0;
+            }
+
+        Element *elem1 = matrix->first;
+        Element *elem2 = matrix->first;
+
+        for (int i = 1; i < row1; i++) {
+            elem1 = elem1->below;
+        }
+        for (int j = 1; j < col1; j++) {
+            elem1 = elem1->right;
+        }
+
+        for (int i = 1; i < row2; i++) {
+            elem2 = elem2->below;
+        }
+        for (int j = 1; j < col2; j++) {
+            elem2 = elem2->right;
+        }
+
+        if (elem1 == NULL || elem2 == NULL) {
+            return 0;
+        }
+
+        int temp = elem1->data;
+        elem1->data = elem2->data;
+        elem2->data = temp;
+
+        return 1;
+    }
