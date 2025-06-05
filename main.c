@@ -8,7 +8,6 @@
 int main() {
 
     Matrix *matrix = createMatrix(3, 5);
-
     allocateMatrixElements(matrix);
 
     for (int i = 0; i < 3; i++) {
@@ -17,6 +16,7 @@ int main() {
         }
     }
 
+    printf("Matriz original:\n");
     printMatrix(matrix);
     printf("\n\n");
 
@@ -29,13 +29,18 @@ int main() {
     int value = 24;
     if (consultValue(matrix, &element, value) == 1) {
         printf("O valor %d está na matriz\n", value);
-    } else if (consultValue(matrix, &element, value) == 0) {
+    } else {
         printf("O valor %d nao está na matriz\n", value);
     }
 
     printNeighbours(matrix, 2, 3);
 
-    freeMatrix(matrix);
+    printf("Trocando os elementos das posições (1,1) e (3,5):\n");
+    swapElements(matrix, 1, 1, 3, 5);
 
+    printf("Matriz após troca:\n");
+    printMatrix(matrix);
+
+    freeMatrix(matrix);
     return 0;
 }
