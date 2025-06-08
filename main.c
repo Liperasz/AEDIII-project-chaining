@@ -101,6 +101,26 @@ int main() {
     printMatrix(matrix);
     printf("\n\n");
 
+    printf("Criando matriz 2\n");
+    Matrix *matrix2 = createMatrix(matrix->rows, matrix->columns);
+    allocateMatrixElements(matrix2);
+    for (int i = 0; i < matrix2->rows; i++) {
+        for (int j = 0; j < matrix2->columns; j++) {
+            insertValue(matrix2, i+1, j+1, 2);
+        }
+    }
+    printMatrix(matrix2);
+    printf("\n\n");
+
+    printf("Somando matrizes 1 e 2\n");
+    Matrix *result = createMatrix(matrix2->rows, matrix2->columns);
+    sumMatrix(matrix, matrix2, &result);
+    printMatrix(result);
+
+
     freeMatrix(matrix);
+    freeMatrix(matrix2);
+    freeMatrix(result);
+
     return 0;
 }
