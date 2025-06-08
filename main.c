@@ -41,6 +41,66 @@ int main() {
     printf("Matriz após troca:\n");
     printMatrix(matrix);
 
+    printf("Adicionando Linha\n");
+    addRow(matrix, 1);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Adicionando Linha\n");
+    addRow(matrix, 4);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Adicionando Linha\n");
+    addRow(matrix, 8);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Adicionando Coluna\n");
+    addColumn(matrix, 1);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Adicionando Coluna\n");
+    addColumn(matrix, 2);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Adicionando Coluna\n");
+    addColumn(matrix, 30);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Linha\n");
+    removeRow(matrix, 1);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Linha\n");
+    removeRow(matrix, 2);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Linha\n");
+    removeRow(matrix, 4);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Coluna\n");
+    removeColumn(matrix, 1);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Coluna\n");
+    removeColumn(matrix, 3);
+    printMatrix(matrix);
+    printf("\n\n");
+
+    printf("Removendo Coluna\n");
+    removeColumn(matrix, 20);
+    printMatrix(matrix);
+    printf("\n\n");
+
     freeMatrix(matrix);
     return 0;
 }

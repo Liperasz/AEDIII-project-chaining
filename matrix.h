@@ -27,7 +27,6 @@ Matrix* createMatrix(int row, int col);
 void freeMatrix(Matrix *matrix);
 void printMatrix(Matrix *matrix);
 int createElement(Matrix *matrix, int row, int col);
-int removeElement(Matrix *matrix, int row, int col);
 int allocateMatrixElements(Matrix *matrix);
 int addRow(Matrix *matrix, int row);
 int addColumn(Matrix *matrix, int col);

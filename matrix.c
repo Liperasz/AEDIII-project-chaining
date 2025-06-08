@@ -110,47 +110,6 @@ int createElement(Matrix *matrix, int row, int col) {
     return 1;
 }
 
-int removeElement(Matrix *matrix, int row, int col) {
-
-    if (matrix == NULL || matrix->first == NULL) {
-        return 0;
-    }
-
-    if (row < 1 || col < 1 || row > matrix->rows || col > matrix->columns) {
-        return 0;
-    }
-
-    Element *element = matrix->first;
-    for (int i = 1; i < row; i++) {
-        element = element->below;
-    }
-    for (int i = 1; i < col; i++) {
-        element = element->right;
-    }
-
-    if (element == NULL) {
-        return 0;
-    }
-
-
-    if (element->above != NULL) {
-        element->above->below = element->below;
-    }
-    if (element->below != NULL) {
-        element->below->above = element->above;
-    }
-    if (element->left != NULL) {
-        element->left->right = element->right;
-    }
-    if (element->right != NULL) {
-        element->right->left = element->left;
-    }
-
-    free(element);
-
-    return 1;
-
-}
 
 int allocateMatrixElements(Matrix *matrix) {
 
@@ -172,126 +131,338 @@ int allocateMatrixElements(Matrix *matrix) {
 
 int addRow(Matrix *matrix, int row) {
 
-    if (matrix == NULL) {
+
+    if (matrix == NULL || matrix->first == NULL || row < 1) {
         return 0;
     }
 
-    if (matrix->rows + 1 < row) {
-        return 0;
+
+    if (row > matrix->rows) {
+        row = matrix->rows + 1;
     }
+
+    Element *aux = matrix->first;
+
+    if (row == 1) {
+
+        for (int i = 0; i < matrix->columns; i++) {
+
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->below = NULL;
+            element->left = NULL;
+            element->right = NULL;
+            element->above = NULL;
+
+            if (i == 0) {
+                matrix->first = element;
+            }
+            aux->above = element;
+            element->below = aux;
+
+            if (i > 0) {
+                element->left = aux->left->above;
+                aux->left->above->right = element;
+            }
+
+            aux = aux->right;
+
+        }
+
+    }
+
+    if (row > 1 && row <= matrix->rows) {
+
+        for (int i = 0; i < row - 1; i++) {
+            aux = aux->below;
+        }
+
+        for (int i = 0; i < matrix->columns; i++) {
+
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->below = aux;
+            element->left = NULL;
+            element->right = NULL;
+            element->above = aux->above;
+            element->above->below = element;
+            aux->above = element;
+
+            if (i > 0) {
+                element->left = aux->left->above;
+                aux->left->above->right = element;
+            }
+
+            aux = aux->right;
+
+        }
+
+    }
+
+    if (row == matrix->rows + 1) {
+
+        for (int i = 1; i < matrix->rows; i++) {
+            aux = aux->below;
+        }
+
+        for (int i = 0; i < matrix->columns; i++) {
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->below = NULL;
+            element->left = NULL;
+            element->right = NULL;
+            element->above = aux;
+
+            aux->below = element;
+
+
+            if (i > 0) {
+
+                element->left = aux->left->below;
+                aux->left->below->right = element;
+
+            }
+
+            aux = aux->right;
+
+        }
+    }
+
 
     matrix->rows += 1;
-    for (int i = 0; i < matrix->columns; i++) {
-
-
-        //Falta atualização do createElement()
-
-        // createElement(matrix, row, i + 1);
-
-        //-------------------------------------------------------------------------------
-
-
-    }
-
     return 1;
 }
 
 int addColumn(Matrix *matrix, int col) {
 
-    if (matrix == NULL) {
+    if (matrix == NULL || matrix->first == NULL || col < 1) {
         return 0;
     }
 
-    if (matrix->rows + 1 < col) {
-        return 0;
+    if (col > matrix->columns) {
+        col = matrix->columns + 1;
+    }
+
+    Element *aux = matrix->first;
+
+    if (col == 1) {
+
+        for (int i = 0; i < matrix->rows; i++) {
+
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->right = NULL;
+            element->left = NULL;
+            element->above = NULL;
+            element->below = NULL;
+
+            if (i == 0) {
+                matrix->first = element;
+            }
+
+            aux->left = element;
+            element->right = aux;
+
+            if (i > 0) {
+                element->above = aux->above->left;
+                aux->above->left->below = element;
+            }
+
+            aux = aux->below;
+        }
+    }
+
+    if (col > 1 && col <= matrix->columns) {
+
+        for (int i = 0; i < col - 1; i++) {
+            aux = aux->right;
+        }
+
+        for (int i = 0; i < matrix->rows; i++) {
+
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->right = aux;
+            element->left = aux->left;
+            element->above = NULL;
+            element->below = NULL;
+
+            element->left->right = element;
+            aux->left = element;
+
+            if (i > 0) {
+                element->above = aux->above->left;
+                aux->above->left->below = element;
+            }
+
+            aux = aux->below;
+        }
+    }
+
+    if (col == matrix->columns + 1) {
+
+        for (int i = 1; i < matrix->columns; i++) {
+            aux = aux->right;
+        }
+
+        for (int i = 0; i < matrix->rows; i++) {
+
+            Element *element = (Element*) malloc(sizeof(Element));
+            element->right = NULL;
+            element->left = aux;
+            element->above = NULL;
+            element->below = NULL;
+
+            aux->right = element;
+
+            if (i > 0) {
+                element->above = aux->above->right;
+                aux->above->right->below = element;
+            }
+
+            aux = aux->below;
+        }
     }
 
     matrix->columns += 1;
-    for (int i = 0; i < matrix->rows; i++) {
-
-
-        //Falta atualização do createElement()
-
-        // createElement(matrix, row, i + 1);
-
-        //-------------------------------------------------------------------------------
-
-
-    }
-
     return 1;
 }
 
+
 int removeRow(Matrix *matrix, int row) {
 
-    if (matrix == NULL || matrix->first == NULL) {
+    if (matrix == NULL || matrix->first == NULL || row < 1) {
         return 0;
+    }
+
+    if (row > matrix->rows) {
+        row = matrix->rows;
     }
 
     Element *element = matrix->first;
-    for (int i = 1; i < row; i++) {
-        element = element->below;
+
+    if (row == 1) {
+
+        matrix->first = element->below;
+
+        for (int i = 0; i < matrix->columns; i++) {
+
+            Element *aux = element;
+            element = element->right;
+
+            aux->below->above = NULL;
+            free(aux);
+
+        }
+
     }
 
-    if (element == NULL) {
-        return 0;
+    if (row > 1 && row <= matrix->rows - 1) {
+
+        for (int i = 0; i < row - 1; i++) {
+            element = element->below;
+        }
+
+        for (int i = 0; i < matrix->columns; i++) {
+
+            Element *aux = element;
+            element = element->right;
+            aux->below->above = aux->above;
+            aux->above->below = aux->below;
+
+            free(aux);
+
+        }
+
     }
 
-    int col = 1;
-    while (element != NULL) {
-        Element *aux = element;
-        element = element->right;
+    if (row == matrix->rows) {
 
-        //Falta atualização do removeElement()
+        for (int i = 0; i < row - 1; i++) {
+            element = element->below;
+        }
 
-        // removeElement(matrix, row, col);
+        for (int i = 0; i < matrix->columns; i++) {
 
-        //-------------------------------------------------------------------------------
+            Element *aux = element;
+            element = element->right;
+            aux->above->below = NULL;
 
-        col++;
+            free(aux);
+
+        }
+
     }
 
-    matrix->rows--;
-
+    matrix->rows -= 1;
     return 1;
 
 }
 
 int removeColumn(Matrix *matrix, int col) {
 
-    if (matrix == NULL || matrix->first == NULL) {
+    if (matrix == NULL || matrix->first == NULL || col < 1) {
         return 0;
+    }
+
+    if (col > matrix->columns) {
+        col = matrix->columns;
     }
 
     Element *element = matrix->first;
-    for (int i = 1; i < col; i++) {
-        element = element->right;
+
+    if (col == 1) {
+
+        matrix->first = element->right;
+
+        for (int i = 0; i < matrix->rows; i++) {
+
+            Element *aux = element;
+            element = element->below;
+
+            aux->right->left = NULL;
+            free(aux);
+
+        }
+
     }
 
-    if (element == NULL) {
-        return 0;
+    if (col > 1 && col <= matrix->columns - 1) {
+
+        for (int i = 0; i < col - 1; i++) {
+            element = element->right;
+        }
+
+        for (int i = 0; i < matrix->rows; i++) {
+
+            Element *aux = element;
+            element = element->below;
+            aux->right->left = aux->left;
+            aux->left->right = aux->right;
+
+            free(aux);
+
+        }
+
     }
 
-    int row = 1;
-    while (element != NULL) {
-        Element *aux = element;
-        element = element->below;
+    if (col == matrix->columns) {
 
+        for (int i = 0; i < col - 1; i++) {
+            element = element->right;
+        }
 
-        //Falta atualização do removeElement()
+        for (int i = 0; i < matrix->rows; i++) {
 
-        // removeElement(matrix, row, col);
+            Element *aux = element;
+            element = element->below;
+            aux->left->right = NULL;
 
-        //-------------------------------------------------------------------------------
+            free(aux);
 
+        }
 
-        row++;
     }
 
-    matrix->columns--;
-
+    matrix->columns -= 1;
     return 1;
 }
+
 
 int insertValue(Matrix *matrix, int row, int col, int value) {
 
