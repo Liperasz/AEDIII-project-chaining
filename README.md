@@ -1,4 +1,4 @@
-# Matrix  - Documentação
+# Matriz  - Documentação
 
 Esse é um projeto para a disciplin de Algoritmos e Estruturas de Dados III com o tema de encadeamento de uma matriz.
 
