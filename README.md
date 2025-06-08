@@ -1,88 +1,94 @@
-Matrix* createMatrix(int row, int col):
+# Matrix  - Documentação
 
-  Essa função serve para criar a matriz, o que ela faz é alocar a matriz e definir a quantidade de linhas e colunas que ela tem/terá.
+Esse é um projeto para a disciplin de Algoritmos e Estruturas de Dados III com o tema de encadeamento de uma matriz.
 
-void freeMatrix(Matrix *matrix):
+## Funções Básicas de Matriz
 
-  Essa função serve para liberar a matriz, pegando eliminando cada linha uma de cada vez até liberar a matriz em si. 
-  
-void printMatrix(Matrix *matrix):
+### `Matrix* createMatrix(int row, int col)`
+Aloca e inicializa uma matriz com o número especificado de linhas e colunas.
 
-  Mostra a matriz no terminal, percorre da mesma forma que o freeMatrix, indo linha por linha.
+### `void freeMatrix(Matrix *matrix)`
+Libera toda a memória alocada para a matriz, incluindo todas as linhas e elementos.
 
-int createElement(Matrix *matrix, int row, int col):
+### `void printMatrix(Matrix *matrix)`
+Exibe a matriz no terminal, percorrendo e imprimindo cada elemento linha por linha.
 
-  Serve para criar um novo elemento dada sua posição.
-  A função createElement foi criada numa tentativa de facilitar as outras funções de adição de elementos, como a função de 
-alocar matriz, a função de adicionar coluna e a função de adicionar linha. Porém, devido a complexidade na hora de criar
-essa função, a ideia original ficou de lado, e atualmente ela serve apenas para a função de alocar a matriz. Qualquer
-outra tentativa de uso com ela dará errado. No total, foram quase 9 horas tentando cobrir todas as possibilidades para que 
-a função createElement desse certo, mas não foi possível e desistimos.
-  
-int allocateMatrixElements(Matrix *matrix):
+### `int createElement(Matrix *matrix, int row, int col)`
+Cria um novo elemento na posição especificada. Atualmente, esta função é usada apenas internamente pela `allocateMatrixElements`. Tentativas de uso em outros contextos podem não funcionar como esperado.
 
-  A função aloca os elementos da matriz, conforme informado na própria matriz, com a quantidade de linhas e colunas.
-Ela utiliza da função createElement e é a única função que a utiliza sem problemas.
+*Observação:* Esta função foi desenvolvida para simplificar outras operações, mas devido à complexidade de implementação, seu escopo foi limitado.
 
-// Funções extras parte 1
-int addRow(Matrix *matrix, int row):
+### `int allocateMatrixElements(Matrix *matrix)`
+Aloca todos os elementos da matriz com base nas dimensões (linhas/colunas) especificadas. Esta é a única função que utiliza `createElement` corretamente.
 
-  A função serve para criar uma nova linha em qualquer posição da matriz.
-  A função basicamente é dividida em três possibilidades, verifica se você quer adicionar como nova primeiro linha,
-se quer adicionar no meio da matriz, ou se quer adicionar no final. Para adicionar no primeiro, basta passar o valor 1,
-para o meio, passa bastar em qual posição você deseja que a nova linha fique, e ela empurrará a linha atual para baixo.
-Para colocar no final, basta passar qualquer número que seja maior que a quantidade atual de linhas.
-  Em conjunto com o createElement, essa foi a maior dificuldade do projeto, após muita tentativa de deixar um código
-simples utilizando no createElement, prefirimos deixar o código robusto mas 100% funcional.
+## Funções de Modificação de Estrutura (Parte 1)
 
-int addColumn(Matrix *matrix, int col);
+### `int addRow(Matrix *matrix, int row)`
+Adiciona uma nova linha na posição especificada:
+- `row = 1`: insere como primeira linha
+- `1 < row <= matrix->rows`: insere no meio, empurrando as linhas existentes
+- `row > matrix->rows`: adiciona no final
 
-  Serve para adicionar uma nova coluna em qualquer posição da matriz.
-  Funciona exatamente da mesma forma que addRow, apenas com as modificações necessárias para passar para o próximo elemento.
+### `int addColumn(Matrix *matrix, int col)`
+Adiciona uma nova coluna na posição especificada, funcionando de forma análoga à `addRow`.
 
-int removeRow(Matrix *matrix, int row):
+### `int removeRow(Matrix *matrix, int row)`
+Remove uma linha da matriz:
+- `row = 1`: remove a primeira linha
+- `1 < row <= matrix->rows`: remove uma linha do meio
+- `row > matrix->rows`: remove a última linha
 
-  Serve para remover qualquer linha da matriz.
-  De forma semelhante a addRow, ele verifica caso seja a primeira linha, se é uma linha do meio, ou se é a última linha, e age
-com base nisso, alterando os ponteiros e liberando os elementos.
-  Para remover a ultima linha, basta passar qualquer valor maior que a quantidade atual de linhas.
+### `int removeColumn(Matrix *matrix, int col)`
+Remove uma coluna da matriz, funcionando de forma similar à `removeRow`.
 
-int removeColumn(Matrix *matrix, int col);
+## Operações com Matrizes (Parte 2)
 
-  Serve para remover qualquer coluna da matriz.
-  Funciona da mesma forma que removeRow.
+### `int sumMatrix(Matrix *matrix1, Matrix *matrix2, Matrix **result)`
+Realiza a soma de duas matrizes (matrix1 + matrix2) e armazena o resultado em `result`:
+1. Verifica se as dimensões das matrizes são compatíveis
+2. Se a matriz resultante já existir, ela é liberada
+3. Cria uma nova matriz com as dimensões adequadas
+4. Armazena a soma dos elementos correspondentes
 
-// Funções extras parte 2
-int sumMatrix(Matrix *matrix1, Matrix *matrix2, Matrix **result):
+## Funções Principais (Requisitadas)
 
-  Passado como parâmetro três matrizes, ele faz a soma da matriz A + Matriz B, e o resultado saí na matriz C.
-  A função verifica se a quantidade de elementos entre as matrizes são iguais através de matrix->columns e matrix->rows.
-Caso for igual, então a função verifica se a matriz C já existe, se existir, ela é eliminada e uma nova é criada. O 
-objetivo é que a matriz C tem que possuir a mesma quantidade de elementos que a Matriz A e a Matriz B. Após esse processo,
-a função percorre linha por linha atribuindo os valores das somas na matriz C.
+### `int insertValue(Matrix *matrix, int row, int col, int value)`
+Insere um valor na posição (row, col) especificada da matriz.
 
-// Funções pedidas na instrução do projeto
-int insertValue(Matrix *matrix, int row, int col, int value):
+### `int consultValuePosition(Matrix *matrix, Element **element, int row, int col)`
+Consulta o valor em uma posição específica, armazenando o elemento encontrado no ponteiro fornecido.
 
-  A função insertValue serve para inserir o valor em uma posição escolhida.
-  A função acha o elemento que está na posição desejada e aplica o valor que foi passado como parâmetro.
-  
-int consultValuePosition(Matrix *matrix, Element **element, int row, int col):
+### `int consultValue(Matrix *matrix, Element **element, int value)`
+Busca um valor na matriz. Se encontrado, o ponteiro `element` aponta para sua localização; caso contrário, aponta para NULL.
 
-  A função consulta o valor presente em uma posição específica.
-  A função primeiro acha a linha e depois a coluna do elemento, e então coloca o valor encontrado na posição em um ponteiro
-que é passado como parâmetro.
+### `int printNeighbours(Matrix *matrix, int row, int col)`
+Exibe os vizinhos (superior, inferior, esquerdo, direito) do elemento na posição especificada. Vizinhos inexistentes são mostrados como NULL.
 
-int consultValue(Matrix *matrix, Element **element, int value):
+## Função Extra
 
-  A função serve para consultar o elemento onde um valor está presente.
-  A função percorre a matriz em busca de um valor específico, ao encontrar o valor, o ponteiro passado como parâmetro
-passa a apontar para o elemento onde o valor está presente. Caso o valor não esteja na matriz, o ponteiro aponta para NULL.
+### `int swapElements(Matrix *matrix, int row1, int col1, int row2, int col2)`
+Troca os valores entre dois elementos da matriz. Observação: Esta operação não altera a estrutura de ponteiros, apenas os valores armazenados.
 
-int printNeighbours(Matrix *matrix, int row, int col):
 
-  A função serve para mostrar na tela os elementos vizinhos a um elemento de uma posição específica.
-  A função percorre até a posição e mostra os elementos vizinhos, caso não existam, mostra que o vizinho é NULL.
+## Dificuldades e Desafios do Projeto
 
-// Essa troca não muda a posição real dos nós na estrutura de ponteiros, apenas os valores armazenados ( FUNÇÂO EXTRA)
-int swapElements(Matrix *matrix, int row1, int col1, int row2, int col2);
+Principais desafios do projeto:
+
+### 1. Implementação da `createElement`
+- A função foi concebida como uma solução genérica para criação de elementos, visando simplificar outras operações como alocação de matriz, adição de linhas e colunas
+- Encontramos complexidades inesperadas na manipulação dos ponteiros em diferentes contextos
+- Dedicação: aproximadamente 9 horas de tentativas para cobrir todos os casos de uso
+- Solução adotada: limitamos seu escopo para uso exclusivo pela `allocateMatrixElements`
+
+### 2. Operações `addRow` e `addColumn`
+- A principal dificuldade foi desenvolver uma lógica única que cobrisse três cenários distintos:
+  - Inserção no início da matriz
+  - Inserção no meio da estrutura
+  - Inserção no final
+- Originalmente planejávamos utilizar `createElement` para simplificar o código
+- Solução final: implementação de código mais robusto, com tratamentos específicos para cada caso
+
+### 3. Gerenciamento de Memória
+- Desafio constante na manipulação dinâmica da estrutura encadeada
+- Necessidade de garantir que todas as alocações fossem corretamente liberadas
+- Dificuldade especial nas operações de remoção de linhas/colunas
